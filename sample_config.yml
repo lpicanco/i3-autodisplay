@@ -1,0 +1,4 @@
+displays:
+  - name: HDM1
+    workspaces: [1,2,3]
+    randr_extra_options: "--left-of eDP1"
