@@ -2,19 +2,22 @@ package config
 
 import (
 	"flag"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
+
+	"gopkg.in/yaml.v3"
 )
 
+type Display struct {
+	Name              string
+	RandrExtraOptions string `yaml:"randr_extra_options"`
+	Workspaces        []int
+}
+
 var Config = struct {
-	Displays []struct {
-		Name              string `required:"true"`
-		RandrExtraOptions string `yaml:"randr_extra_options"`
-		Workspaces        []int
-	}
+	Displays []Display
 }{}
 
 func init() {

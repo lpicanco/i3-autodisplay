@@ -1,4 +1,9 @@
 displays:
-  - name: HDM1
-    workspaces: [1,2,3]
+  - name: HDMI1
+    workspaces: [1,3,5,7,9]
     randr_extra_options: "--left-of eDP1"
+  - name: DP1
+    workspaces: [2,4,6,8]
+    randr_extra_options: "--left-of HDMI1"
+  - name: eDP1
+    workspaces: [10]
