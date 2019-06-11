@@ -3,9 +3,9 @@ package i3
 import (
 	"errors"
 	"fmt"
+
 	"github.com/lpicanco/i3-autodisplay/config"
 	"go.i3wm.org/i3"
-	"log"
 )
 
 func GetCurrentWorkspaceNumber() (int64, error) {
@@ -33,7 +33,6 @@ func UpdateWorkspaces(display config.Display) error {
 	for _, workspace := range display.Workspaces {
 
 		command := fmt.Sprintf("workspace %d; move workspace to %s", workspace, display.Name)
-		log.Println(command)
 		_, err := i3.RunCommand(command)
 
 		if err != nil {

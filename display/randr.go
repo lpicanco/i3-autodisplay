@@ -1,11 +1,12 @@
 package display
 
 import (
-	"github.com/lpicanco/i3-autodisplay/i3"
 	"log"
 	"os/exec"
 	"reflect"
 	"strings"
+
+	"github.com/lpicanco/i3-autodisplay/i3"
 
 	"github.com/BurntSushi/xgb"
 	"github.com/BurntSushi/xgb/randr"
@@ -38,10 +39,20 @@ func Refresh() {
 		return
 	}
 
+	currentWorkspace, err := i3.GetCurrentWorkspaceNumber()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for _, display := range config.Config.Displays {
 		if currentOutputConfiguration[display.Name] {
 			refreshDisplay(display)
 		}
+	}
+
+	err = i3.SetCurrentWorkspace(currentWorkspace)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	lastOutputConfiguration = currentOutputConfiguration
@@ -72,11 +83,6 @@ func ListenEvents() {
 }
 
 func refreshDisplay(display config.Display) {
-	currentWorkspace, err := i3.GetCurrentWorkspaceNumber()
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	args := []string{"--output", display.Name, "--auto"}
 	if display.RandrExtraOptions != "" {
 		args = append(args, strings.Split(display.RandrExtraOptions, " ")...)
@@ -92,11 +98,6 @@ func refreshDisplay(display config.Display) {
 	err = i3.UpdateWorkspaces(display)
 	if err != nil {
 		log.Fatalf("Error updating i3 workspaces: %s\n", err)
-	}
-
-	err = i3.SetCurrentWorkspace(currentWorkspace)
-	if err != nil {
-		log.Fatal(err)
 	}
 }
 
