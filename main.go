@@ -6,6 +6,5 @@ import (
 
 func main() {
 	display.Refresh()
-	display.Refresh()
 	display.ListenEvents()
 }
