@@ -16,7 +16,7 @@ Fetch the [latest release](https://github.com/lpicanco/i3-autodisplay/releases).
 ```bash
 git clone https://github.com/lpicanco/i3-autodisplay.git
 cd i3-autodisplay
-go build ./...
+go build cmd/i3-autodisplay/i3-autodisplay.go
 ```
 
 ## Usage
