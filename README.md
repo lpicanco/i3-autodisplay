@@ -14,9 +14,9 @@ Fetch the [latest release](https://github.com/lpicanco/i3-autodisplay/releases).
 ### From sources
 
 ```bash
-go get github.com/lpicanco/i3-autodisplay
-cd $GOPATH/src/github.com/lpicanco/i3-autodisplay
-go build
+git clone https://github.com/lpicanco/i3-autodisplay.git
+cd i3-autodisplay
+go build ./...
 ```
 
 ## Usage
