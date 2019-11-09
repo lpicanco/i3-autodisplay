@@ -23,12 +23,12 @@ func init() {
 	var err error
 	xgbConn, err = xgb.NewConn()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("error initializing xgb: %v", err)
 	}
 
 	err = randr.Init(xgbConn)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("error initializing randr: %v", err)
 	}
 }
 
@@ -41,7 +41,7 @@ func Refresh() {
 
 	currentWorkspace, err := i3.GetCurrentWorkspaceNumber()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("error getting i3 current workspace: %v", err)
 	}
 
 	for _, display := range config.Config.Displays {
@@ -52,7 +52,7 @@ func Refresh() {
 
 	err = i3.SetCurrentWorkspace(currentWorkspace)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("error setting i3 current workspace: %v", err)
 	}
 
 	lastOutputConfiguration = currentOutputConfiguration
@@ -66,13 +66,13 @@ func ListenEvents() {
 		randr.NotifyMaskScreenChange|randr.NotifyMaskCrtcChange|randr.NotifyMaskOutputChange).Check()
 
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("error subscribing to randr events: %v", err)
 	}
 
 	for {
 		ev, err := xgbConn.WaitForEvent()
 		if err != nil {
-			log.Fatal(err)
+			log.Fatalf("error processing randr event: %v", err)
 		}
 
 		switch ev.(type) {
@@ -108,13 +108,13 @@ func getOutputConfiguration() map[string]bool {
 	resources, err := randr.GetScreenResources(xgbConn, root).Reply()
 
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("error getting randr screen resources: %v", err)
 	}
 
 	for _, output := range resources.Outputs {
 		info, err := randr.GetOutputInfo(xgbConn, output, 0).Reply()
 		if err != nil {
-			log.Fatal(err)
+			log.Fatalf("error getting randr output info: %v", err)
 		}
 
 		config[string(info.Name)] = info.Connection == randr.ConnectionConnected

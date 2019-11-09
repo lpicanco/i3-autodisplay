@@ -25,11 +25,11 @@ func init() {
 	data, err := ioutil.ReadFile(configFile)
 
 	if err != nil {
-		log.Fatalf("Error reading configuration file: %s", err)
+		log.Fatalf("error reading configuration file: %s", err)
 	}
 
 	if err := yaml.Unmarshal(data, &Config); err != nil {
-		log.Fatalf("Error processing configuration file %s: \n %s", configFile, err)
+		log.Fatalf("error processing configuration file %s: \n %s", configFile, err)
 	}
 }
 
