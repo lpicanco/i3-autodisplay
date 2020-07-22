@@ -1,11 +1,11 @@
 # i3-autodisplay
-i3-autodisplay is a i3wm display auto-configuration
+i3-autodisplay is a i3wm display auto-configuration for multiple monitors
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/lpicanco/i3-autodisplay)](https://goreportcard.com/report/github.com/lpicanco/i3-autodisplay)
 
 ## Installation
 
-### Pre-requisites
+### Pre requisites
 [xrandr](https://www.x.org/archive/current/doc/man/man1/xrandr.1.xhtml) program
 
 ### Pre built binary
