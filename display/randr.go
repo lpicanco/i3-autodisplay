@@ -47,6 +47,8 @@ func Refresh() {
 	for _, display := range config.Config.Displays {
 		if currentOutputConfiguration[display.Name] {
 			refreshDisplay(display)
+		} else {
+			disableDisplay(display)
 		}
 	}
 
@@ -98,6 +100,17 @@ func refreshDisplay(display config.Display) {
 	err = i3.UpdateWorkspaces(display)
 	if err != nil {
 		log.Fatalf("Error updating i3 workspaces: %s\n", err)
+	}
+}
+
+func disableDisplay(display config.Display) {
+	args := []string{"--output", display.Name, "--off"}
+
+	cmd := exec.Command("xrandr", args...)
+	out, err := cmd.CombinedOutput()
+
+	if err != nil {
+		log.Fatalf("Error executing xrandr: %s\n%s", err, out)
 	}
 }
 
