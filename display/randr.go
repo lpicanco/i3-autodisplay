@@ -44,11 +44,23 @@ func Refresh() {
 		log.Fatalf("error getting i3 current workspace: %v", err)
 	}
 
+	args := []string{}
+	for _, display := range config.Config.Displays {
+		active := currentOutputConfiguration[display.Name]
+		args = append(args, getDisplayOptions(display, active)...)
+	}
+
+	log.Println("xrandr", args)
+	cmd := exec.Command("xrandr", args...)
+	out, err := cmd.CombinedOutput()
+
+	if err != nil {
+		log.Fatalf("Error executing xrandr: %s\n%s", err, out)
+	}
+
 	for _, display := range config.Config.Displays {
 		if currentOutputConfiguration[display.Name] {
 			refreshDisplay(display)
-		} else {
-			disableDisplay(display)
 		}
 	}
 
@@ -84,33 +96,23 @@ func ListenEvents() {
 	}
 }
 
-func refreshDisplay(display config.Display) {
-	args := []string{"--output", display.Name, "--auto"}
-	if display.RandrExtraOptions != "" {
-		args = append(args, strings.Split(display.RandrExtraOptions, " ")...)
-	}
-
-	cmd := exec.Command("xrandr", args...)
-	out, err := cmd.CombinedOutput()
-
-	if err != nil {
-		log.Fatalf("Error executing xrandr: %s\n%s", err, out)
-	}
-
-	err = i3.UpdateWorkspaces(display)
-	if err != nil {
-		log.Fatalf("Error updating i3 workspaces: %s\n", err)
+func getDisplayOptions(display config.Display, active bool) []string {
+	if active {
+		args := []string{"--output", display.Name, "--auto"}
+		if display.RandrExtraOptions != "" {
+			args = append(args, strings.Split(display.RandrExtraOptions, " ")...)
+		}
+		return args
+	} else {
+		args := []string{"--output", display.Name, "--off"}
+		return args
 	}
 }
 
-func disableDisplay(display config.Display) {
-	args := []string{"--output", display.Name, "--off"}
-
-	cmd := exec.Command("xrandr", args...)
-	out, err := cmd.CombinedOutput()
-
+func refreshDisplay(display config.Display) {
+	err := i3.UpdateWorkspaces(display)
 	if err != nil {
-		log.Fatalf("Error executing xrandr: %s\n%s", err, out)
+		log.Fatalf("Error updating i3 workspaces: %s\n", err)
 	}
 }
 
