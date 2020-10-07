@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/lpicanco/i3-autodisplay/config"
-	"go.i3wm.org/i3"
+	"go.i3wm.org/i3/v4"
 )
 
 func GetCurrentWorkspaceNumber() (int64, error) {

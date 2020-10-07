@@ -1,0 +1,25 @@
+# Use the (faster) container-based infrastructure, see also
+# http://docs.travis-ci.com/user/workers/container-based-infrastructure/
+sudo: false
+dist: trusty
+services:
+  - docker
+
+language: go
+go:
+  - "1.12"
+go_import_path: go.i3wm.org/i3
+
+env:
+  global:
+  - secure: "c9Q/SwO3gQ0rCJDCk9V9NgchFVCUj5+dIJbKqUcbXpdtaG8WLNWEamrv4nqbrLWw/I9Zw9St4VErqbqxU4Fee9ftt+PBbtMOi/eZ6LbnnDjJCYnz912Wf7v05L5Ghl1WNf8ajNCjvBpsJMe6UixBmZHeBqSin5OUT55gN+wMi68VaxTbo0DchXjuU7hXfDvV4iVvmtQmP9C4yQDz9HiEdaDz9SP0HNCzngONikld8rGSRX+V2XyaJsd13hJQM0ZfCXuRS0J0OBLz3msiSbobuWUzApI/s81AHUdkj3JbXfrxaA0kj75fZquqFyTaiNQRjKVqwXGGaMWcVNFOeDv3l5n6HMuImjxEypDwFcjbDo/9ivGeG31f7oh+lB/JkhRoZmW6tiIlRSy4rdVKmzn0ENIvxPcEFzqoLdail5ffM/b7KS2eGetTG/86PaLbk4XoQDzVcOWgOjeNn/meOAgUBEEMauZQZhF57Bs7ev62BReu8PbTXTyCVhpR77oAnt9dfW1tEQTrUBH9vG32V+/aC6YmrD/NM4t4VpvyJr/npXGyTW9JJ9bPLfHZEXjdoyOtBPNuousa7rM6hD2hbQ+/lVuEZp2c2RIIpuP5cG4MzHmA4W1GsDRbm/zG87VKt2zaKA2tuXPULDvlux49zI19OZB7sSYm3RgVN/+6YhYPwSs=" # PERSIST_URL
+
+script:
+  # Check whether files are syntactically correct.
+  - "gofmt -l $(find . -name '*.go' | tr '\\n' ' ') >/dev/null"
+  # Check whether files were not gofmt'ed.
+  - "gosrc=$(find . -name '*.go' | tr '\\n' ' '); [ $(gofmt -l $gosrc 2>&- | wc -l) -eq 0 ] || (echo 'gofmt was not run on these files:'; gofmt -l $gosrc 2>&-; false)"
+  - go vet .
+  - go test -c
+  - docker build --pull --no-cache --rm -t=goi3 -f travis/Dockerfile .
+  - docker run -v $PWD:/usr/src goi3 /bin/sh -c 'strace -f -o st -s 2048 -v -y ./i3.test -test.v' || curl --data-binary @st -X PUT $PERSIST_URL
