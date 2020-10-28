@@ -2,6 +2,7 @@
 i3-autodisplay is a i3wm display auto-configuration for multiple monitors
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/lpicanco/i3-autodisplay)](https://goreportcard.com/report/github.com/lpicanco/i3-autodisplay)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/lpicanco/i3-autodisplay)
 
 ## Installation
 
