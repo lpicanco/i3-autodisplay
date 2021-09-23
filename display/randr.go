@@ -46,7 +46,7 @@ func Refresh() {
 
 	args := []string{}
 	for _, display := range config.Config.Displays {
-		active := currentOutputConfiguration[display.Name]
+		active := isDisplayActive(display, currentOutputConfiguration)
 		args = append(args, getDisplayOptions(display, active)...)
 	}
 
@@ -59,7 +59,7 @@ func Refresh() {
 	}
 
 	for _, display := range config.Config.Displays {
-		if currentOutputConfiguration[display.Name] {
+		if isDisplayActive(display, currentOutputConfiguration) {
 			refreshDisplay(display)
 		}
 	}
@@ -94,6 +94,18 @@ func ListenEvents() {
 			Refresh()
 		}
 	}
+}
+
+func isDisplayActive(display config.Display, currentOutputConfiguration map[string]bool) bool {
+	if !currentOutputConfiguration[display.Name] {
+		return false
+	}
+	for _, d := range display.TurnOffWhen {
+		if currentOutputConfiguration[d] {
+			return false
+		}
+	}
+	return true
 }
 
 func getDisplayOptions(display config.Display, active bool) []string {
