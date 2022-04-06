@@ -30,13 +30,21 @@ func SetCurrentWorkspace(workspaceNum int64) error {
 }
 
 func UpdateWorkspaces(display config.Display) error {
+	ws, err := i3.GetWorkspaces()
+	if err != nil {
+		return err
+	}
+
 	for _, workspace := range display.Workspaces {
+		for _, w := range ws {
+			if w.Num == workspace && w.Output != display.Name {
+				command := fmt.Sprintf("workspace number %d; move workspace to output %s", workspace, display.Name)
+				_, err := i3.RunCommand(command)
 
-		command := fmt.Sprintf("workspace number %d; move workspace to output %s", workspace, display.Name)
-		_, err := i3.RunCommand(command)
-
-		if err != nil {
-			return err
+				if err != nil {
+					return err
+				}
+			}
 		}
 	}
 
