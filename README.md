@@ -13,7 +13,8 @@ i3-autodisplay is a i3wm display auto-configuration for multiple monitors
 Fetch the [latest release](https://github.com/lpicanco/i3-autodisplay/releases).
 
 ### Archlinux AUR
-[i3-autodisplay](https://aur.archlinux.org/packages/i3-autodisplay)
+- [i3-autodisplay](https://aur.archlinux.org/packages/i3-autodisplay)
+- [i3-autodisplay-bin](https://aur.archlinux.org/packages/i3-autodisplay-bin)
 
 ### From sources
 
