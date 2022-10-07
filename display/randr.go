@@ -21,6 +21,7 @@ var (
 
 func init() {
 	var err error
+	
 	xgbConn, err = xgb.NewConn()
 	if err != nil {
 		log.Fatalf("error initializing xgb: %v", err)
