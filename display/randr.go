@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/lpicanco/i3-autodisplay/i3"
 
@@ -47,20 +48,32 @@ func Refresh() {
 
 	args := []string{}
 	for _, display := range config.Config.Displays {
-		active := currentOutputConfiguration[display.Name]
+		active := isDisplayActive(display, currentOutputConfiguration)
 		args = append(args, getDisplayOptions(display, active)...)
 	}
 
-	log.Println("xrandr", args)
-	cmd := exec.Command("xrandr", args...)
-	out, err := cmd.CombinedOutput()
+	// sometimes during suspend/wake up routines xrandr is unable to configure monitors.
+	// 5 secs of retries should be enough to work it around
+	retries := 5
+	retriesLeft := retries
 
-	if err != nil {
-		log.Fatalf("Error executing xrandr: %s\n%s", err, out)
+	for {
+		log.Println("xrandr", args)
+		cmd := exec.Command("xrandr", args...)
+		out, err := cmd.CombinedOutput()
+		if err == nil {
+			break
+		}
+		log.Printf("Error executing xrandr: %s\n%s", err, out)
+		retriesLeft--
+		if retriesLeft == 0 {
+			log.Fatalf("unable to execute the xrandr command after %d attempts", retries)
+		}
+		time.Sleep(time.Second)
 	}
 
 	for _, display := range config.Config.Displays {
-		if currentOutputConfiguration[display.Name] {
+		if isDisplayActive(display, currentOutputConfiguration) {
 			refreshDisplay(display)
 		}
 	}
@@ -95,6 +108,18 @@ func ListenEvents() {
 			Refresh()
 		}
 	}
+}
+
+func isDisplayActive(display config.Display, currentOutputConfiguration map[string]bool) bool {
+	if !currentOutputConfiguration[display.Name] {
+		return false
+	}
+	for _, d := range display.TurnOffWhen {
+		if currentOutputConfiguration[d] {
+			return false
+		}
+	}
+	return true
 }
 
 func getDisplayOptions(display config.Display, active bool) []string {
