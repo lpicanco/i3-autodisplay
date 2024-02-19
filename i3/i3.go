@@ -20,7 +20,7 @@ func GetCurrentWorkspaceNumber() (int64, error) {
 		}
 	}
 
-	return -1, errors.New("Cant find current workspace")
+	return -1, errors.New("Can't find current workspace")
 }
 
 func SetCurrentWorkspace(workspaceNum int64) error {
