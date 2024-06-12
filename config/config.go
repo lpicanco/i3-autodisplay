@@ -12,7 +12,8 @@ import (
 
 type Display struct {
 	Name              string
-	RandrExtraOptions string `yaml:"randr_extra_options"`
+	RandrExtraOptions string   `yaml:"randr_extra_options"`
+	TurnOffWhen       []string `yaml:"turn_off_when"`
 	Workspaces        []int
 }
 

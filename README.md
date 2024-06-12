@@ -55,3 +55,12 @@ displays:
     randr_extra_options: "--left-of HDMI1"
 ```
 
+If you'd like to have your laptop monitor turned off when an external one is connected, here's another example ('eDP-1' being the laptop screen):
+```yaml
+displays:
+  - name: eDP-1
+    workspaces: [1,2,3,4,5,6,7,8,9,0]
+    turn_off_when: ["DP-1"]
+  - name: DP-1
+    workspaces: [1,2,3,4,5,6,7,8,9,0]
+```
