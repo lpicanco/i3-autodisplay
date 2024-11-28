@@ -12,9 +12,6 @@ import (
 	"github.com/jezek/xgb/xproto"
 	"github.com/lpicanco/i3-autodisplay/config"
 	"github.com/lpicanco/i3-autodisplay/i3"
-	// "github.com/BurntSushi/xgb/randr"
-	// "github.com/BurntSushi/xgb/xproto"
-	// "github.com/lpicanco/i3-autodisplay/config"
 )
 
 var (
