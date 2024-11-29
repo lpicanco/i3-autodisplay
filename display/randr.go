@@ -6,12 +6,12 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/lpicanco/i3-autodisplay/i3"
+	"github.com/jezek/xgb"
 
-	"github.com/BurntSushi/xgb"
-	"github.com/BurntSushi/xgb/randr"
-	"github.com/BurntSushi/xgb/xproto"
+	"github.com/jezek/xgb/randr"
+	"github.com/jezek/xgb/xproto"
 	"github.com/lpicanco/i3-autodisplay/config"
+	"github.com/lpicanco/i3-autodisplay/i3"
 )
 
 var (
@@ -21,7 +21,7 @@ var (
 
 func init() {
 	var err error
-	
+
 	xgbConn, err = xgb.NewConn()
 	if err != nil {
 		log.Fatalf("error initializing xgb: %v", err)

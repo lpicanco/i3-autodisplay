@@ -2,7 +2,6 @@ package config
 
 import (
 	"flag"
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -22,7 +21,7 @@ var Config = struct {
 
 func init() {
 	configFile := getConfirFilePath()
-	data, err := ioutil.ReadFile(configFile)
+	data, err := os.ReadFile(configFile)
 
 	if err != nil {
 		log.Fatalf("error reading configuration file: %s", err)
