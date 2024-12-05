@@ -12,7 +12,7 @@ import (
 type Display struct {
 	Name              string
 	RandrExtraOptions string `yaml:"randr_extra_options"`
-	Workspaces        []int
+	Workspaces        []int64
 }
 
 var Config = struct {
