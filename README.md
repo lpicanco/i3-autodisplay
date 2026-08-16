@@ -16,6 +16,14 @@ Fetch the [latest release](https://github.com/lpicanco/i3-autodisplay/releases).
 - [i3-autodisplay](https://aur.archlinux.org/packages/i3-autodisplay)
 - [i3-autodisplay-bin](https://aur.archlinux.org/packages/i3-autodisplay-bin)
 
+### Debian
+
+Debian packages, built from source at release tags, are available from the pkg.haus APT archive for stable, testing and unstable on amd64 and arm64. Set up the archive per the instructions on https://pkg.haus, then install with:
+
+```bash
+sudo apt install i3-autodisplay
+```
+
 ### From sources
 
 ```bash
